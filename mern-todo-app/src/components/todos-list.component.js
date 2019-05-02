@@ -4,9 +4,9 @@ import axios from 'axios';
 
 const Todo = props => (
     <tr>
-        <td>{props.todo.todo_description}</td>
-        <td>{props.todo.todo_responsible}</td>
-        <td>{props.todo.todo_priority}</td>
+        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_description}</td>
+        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_responsible}</td>
+        <td className={props.todo.todo_completed ? 'completed' : ''}>{props.todo.todo_priority}</td>
         <td>
             <Link to={'/edit/'+props.todo._id}>Edit</Link>
         </td>
@@ -22,6 +22,16 @@ export default class TodosList extends Component {
 
     componentDidMount() {
         //another hard coded local link
+        axios.get('http://localhost:8080/todos/')
+            .then(res => {
+                this.setState({todos: res.data});
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    }
+
+    componentDidUpdate() {
         axios.get('http://localhost:8080/todos/')
             .then(res => {
                 this.setState({todos: res.data});
